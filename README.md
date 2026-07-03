@@ -62,6 +62,10 @@ The goal of this project is to practise and document the core skills of a servic
 - Installed **Windows Server 2025 Standard (Desktop Experience)** from ISO.
 - **Lesson learned:** VM files must live *outside* any cloud-synced folder. Early builds were lost when Google Drive synced and removed `.vmdk` files. VMs now live in a local, sync-excluded directory (e.g. `C:\VMs\`).
 
+![VM hardware configuration — 4 GB RAM, 2 vCPUs, 60 GB disk, NAT](VMWare_Settings.png)
+
+![Fresh Windows Server 2025 install, before rename and static IP configuration](Local_Server.png)
+
 ### Phase 2 — Server Configuration ✅
 
 - Renamed the server to `DC01`.
@@ -72,6 +76,10 @@ New-NetIPAddress -InterfaceAlias "Ethernet0" -IPAddress 192.168.8.10 `
   -PrefixLength 24 -DefaultGateway 192.168.8.2
 Set-DnsClientServerAddress -InterfaceAlias "Ethernet0" -ServerAddresses 127.0.0.1
 ```
+
+![Server Manager dashboard on DC01](Service%20Mgr%20Dashboard.png)
+
+![System information showing DC01 configuration](System%20Information.png)
 
 ### Phase 3 — AD DS & DNS ✅
 
@@ -97,6 +105,8 @@ dcdiag /q
 Get-ADDomain | Select-Object DNSRoot, NetBIOSName, DomainMode
 Resolve-DnsName emeka.lab.local
 ```
+
+![DNS configuration for emeka.lab.local](Screenshot%202026-06-24%20223855-DNS.png)
 
 ### Phase 4 — OU Structure, Groups & Bulk User Provisioning ✅
 
@@ -138,6 +148,14 @@ Get-ADUser -Filter * -SearchBase "OU=Company,DC=emeka,DC=lab,DC=local" |
   Measure-Object   # → 15 users
 Get-ADOrganizationalUnit -Filter * | Select-Object Name
 ```
+
+![Company OU structure in Active Directory Users and Computers](screenshots-aduc-company-ou.png)
+
+![Provisioned users in department OUs](screenshots-06-aduc-ou-users.png)
+
+![PowerShell bulk user provisioning output](screenshots-bulk-users-output.png)
+
+![Bulk provisioning output — continued](screenshots-bulk-users-output_2.png)
 
 ### Phase 5 — DHCP ✅
 
@@ -205,7 +223,7 @@ Event Viewer paths checked during the build: *Directory Service*, *DNS Server*, 
 - [ ] Windows 11 client domain join
 - [ ] Baseline Group Policy (mapped drive, password policy) + `gpresult` verification
 - [ ] File server role with department share permissions via security groups
-- [ ] Screenshots for each completed phase
+- [x] Screenshots for completed phases (DHCP console screenshot still to add)
 
 ---
 
@@ -213,5 +231,4 @@ Event Viewer paths checked during the build: *Directory Service*, *DNS Server*, 
 
 Built and documented by **Emeka Anolue** — Engineer-in-Training (EGM) with 11+ years in telecom network operations, building hands-on Windows infrastructure skills for IT support and system administration roles.
 
-📫 emekanolue@gmail.com · [github.com/mekzy3184](https://github.com/mekzy3184)# windows-server-2025-ad-lab
-Windows Server 2025 Active Directory home lab — AD DS, DNS, DHCP, Group Policy, and PowerShell automation on VMware Workstation Pro
+📫 emekanolue@gmail.com · [github.com/mekzy3184](https://github.com/mekzy3184)
